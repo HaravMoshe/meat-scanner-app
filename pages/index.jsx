@@ -14,21 +14,18 @@ export default function MeatScannerApp() {
   const handleFileUpload = async (e) => {
     const file = e.target.files[0];
     const reader = new FileReader();
-
     reader.onload = (evt) => {
       const bstr = evt.target.result;
       const wb = XLSX.read(bstr, { type: "binary" });
       const wsname = wb.SheetNames[0];
       const ws = wb.Sheets[wsname];
       const jsonData = XLSX.utils.sheet_to_json(ws, { header: 1 });
-
       const headers = jsonData[0];
       const rows = jsonData.slice(1);
-
       const formatted = rows.map((row) => {
         const item = {};
         headers.forEach((h, i) => {
-          item[h] = String(row[i]).padStart(4, "0");
+          item[h] = i === 0 ? String(row[i]).padStart(4, "0") : row[i];
         });
         return item;
       });
@@ -51,21 +48,18 @@ export default function MeatScannerApp() {
     const [upc, price] = parseBarcode(barcode);
     setBarcode("");
     if (!upc || !price) return alert("Invalid barcode");
-
     const match = data.find((item) => item["UPC"] === upc);
     if (!match) return alert(`UPC ${upc} not found`);
-
     const pricePerLb = parseFloat(match["Price per lb."]);
     const weight = price / pricePerLb;
-
     setSamples((prev) => {
       const weights = prev[upc]?.weights || [];
       return {
         ...prev,
         [upc]: {
           description: match["Description"],
-          weights: [...weights, weight],
-        },
+          weights: [...weights, weight]
+        }
       };
     });
   };
@@ -77,7 +71,7 @@ export default function MeatScannerApp() {
         UPC: upc,
         Description: obj.description,
         "Avg Weight": roundHalf(avg),
-        Samples: obj.weights.length,
+        Samples: obj.weights.length
       };
     });
     const ws = XLSX.utils.json_to_sheet(exportData);
@@ -103,12 +97,9 @@ export default function MeatScannerApp() {
             />
             <Button onClick={handleScan}>Scan</Button>
           </div>
-          <Button onClick={exportToExcel} variant="outline">
-            Export Results
-          </Button>
+          <Button onClick={exportToExcel} variant="outline">Export Results</Button>
         </CardContent>
       </Card>
-
       <Table>
         <TableHeader>
           <TableRow>

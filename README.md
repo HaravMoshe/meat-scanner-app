@@ -1,3 +1,3 @@
 # Meat Scanner App
 
-Upload barcoded meat items and get average weight statistics.
+Upload item list, scan barcodes, and export weight averages.

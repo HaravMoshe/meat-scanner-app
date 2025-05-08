@@ -7,11 +7,11 @@ export function TableHeader({ children }) {
 }
 
 export function TableHead({ children }) {
-  return <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{children}</th>;
+  return <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">{children}</th>;
 }
 
 export function TableRow({ children }) {
-  return <tr>{children}</tr>;
+  return <tr className="hover:bg-gray-100">{children}</tr>;
 }
 
 export function TableBody({ children }) {
